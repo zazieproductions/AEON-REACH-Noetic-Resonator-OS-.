@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Palette, Volume2, Eye, RefreshCw, Layers, CheckCircle2 } from 'lucide-react';
-import { audio } from '../utils/AudioEngine';
+import { audio } from '../lib/AudioEngine';
 
 interface SynColor {
   hex: string;

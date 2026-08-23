@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { GitCommit, GitPullRequest, HelpCircle, RefreshCw, Trash2, Zap } from 'lucide-react';
-import { audio } from '../utils/AudioEngine';
+import { audio } from '../lib/AudioEngine';
 
 export interface MindNode {
   id: string;

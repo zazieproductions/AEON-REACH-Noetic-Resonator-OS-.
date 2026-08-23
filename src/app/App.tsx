@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { 
   Activity, Cpu, Database, Palette, Bot, GitPullRequest, 
   BookOpen, Waves, Volume2, Monitor, Grid, 
   Terminal, ShieldCheck, RefreshCw, Power, Info
 } from 'lucide-react';
-import { audio } from './utils/AudioEngine';
-import { SEEDED_NOTES, AcousticNote } from './utils/notesData';
-import { AcousticVisualizer } from './components/AcousticVisualizer';
-import { MindMapPanel } from './components/MindMapPanel';
-import { IdeaSynthesizer } from './components/IdeaSynthesizer';
-import { AgentsPanel } from './components/AgentsPanel';
-import { ColorHexPanel } from './components/ColorHexPanel';
-import { NotesPanel } from './components/NotesPanel';
-import { HelpManual } from './components/HelpManual';
-import { VisionarySimulator } from './components/VisionarySimulator';
+import { audio } from '../lib/AudioEngine';
+import { SEEDED_NOTES, AcousticNote } from '../data/notesData';
+import { AcousticVisualizer } from '../components/AcousticVisualizer';
+import { MindMapPanel } from '../components/MindMapPanel';
+import { IdeaSynthesizer } from '../components/IdeaSynthesizer';
+import { AgentsPanel } from '../components/AgentsPanel';
+import { ColorHexPanel } from '../components/ColorHexPanel';
+import { NotesPanel } from '../components/NotesPanel';
+import { HelpManual } from '../components/HelpManual';
+import { VisionarySimulator } from '../components/VisionarySimulator';
 
 // App window configuration
 interface OSWindow {
@@ -139,6 +139,7 @@ export const App: React.FC = () => {
   ]);
 
   const [topZIndex, setTopZIndex] = useState(15);
+  const topZIndexRef = useRef(15);
 
   // Time clock update
   useEffect(() => {
@@ -225,32 +226,34 @@ export const App: React.FC = () => {
     }, 5000);
   };
 
-  // Window sorting
+  // Keep the active window and the z-index state in sync without nesting state updates.
   const bringToFront = (id: string) => {
-    setTopZIndex(prev => {
-      const nextZ = prev + 1;
-      setWindows(wins => wins.map(w => {
-        if (w.id === id) {
-          return { ...w, zIndex: nextZ, isMinimized: false };
-        }
-        return w;
-      }));
-      return nextZ;
-    });
+    const nextZ = topZIndexRef.current + 1;
+    topZIndexRef.current = nextZ;
+    setTopZIndex(nextZ);
+    setWindows(wins => wins.map(window => (
+      window.id === id
+        ? { ...window, zIndex: nextZ, isMinimized: false }
+        : window
+    )));
   };
 
   const toggleWindow = (id: string) => {
     audio.playClick(600, 0.04);
-    setWindows(prev => prev.map(w => {
-      if (w.id === id) {
-        const nextOpen = !w.isOpen;
-        if (nextOpen) {
-          bringToFront(id);
-        }
-        return { ...w, isOpen: nextOpen, isMinimized: false };
-      }
-      return w;
-    }));
+    const target = windows.find(window => window.id === id);
+
+    if (!target) return;
+    if (!target.isOpen) {
+      bringToFront(id);
+      setWindows(current => current.map(window => (
+        window.id === id ? { ...window, isOpen: true, isMinimized: false } : window
+      )));
+      return;
+    }
+
+    setWindows(current => current.map(window => (
+      window.id === id ? { ...window, isOpen: false, isMinimized: false } : window
+    )));
   };
 
   const minimizeWindow = (id: string, e: React.MouseEvent) => {
@@ -435,12 +438,17 @@ export const App: React.FC = () => {
       <header className="h-10 bg-[#070919]/95 border-b border-[#1b1f3c] flex items-center justify-between px-4 z-40 select-none backdrop-blur-md">
         <div className="flex items-center gap-4">
           {/* Logo brand link */}
-          <div className="flex items-center gap-2 cursor-help" onClick={() => toggleWindow('manual')}>
+          <button
+            type="button"
+            className="flex items-center gap-2 cursor-pointer rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+            onClick={() => toggleWindow('manual')}
+            title="Open the operating manual"
+          >
             <Monitor className="h-4 w-4 text-[#00f0ff]" />
             <span className="text-xs font-black tracking-widest text-slate-100 flex items-center gap-1.5">
               AEON-REACH <span className="text-[9px] px-1 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30">GNOSIS</span>
             </span>
-          </div>
+          </button>
 
           <div className="hidden lg:flex items-center gap-3 text-[10px] border-l border-[#1b1f3c] pl-4 text-slate-400">
             <span className="flex items-center gap-1">
@@ -538,10 +546,9 @@ export const App: React.FC = () => {
                 return (
                   <button
                     key={icon.id}
-                    onDoubleClick={() => toggleWindow(icon.id)}
                     onClick={() => {
                       audio.playClick(700, 0.04);
-                      // On single click, if closed, open it.
+                      // One predictable action: open a closed panel or focus an open one.
                       if (!isOpen) toggleWindow(icon.id);
                       else bringToFront(icon.id);
                     }}

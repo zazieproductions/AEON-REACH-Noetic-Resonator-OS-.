@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { AcousticNote, generateHundredsOfNotes } from '../utils/notesData';
-import { audio } from '../utils/AudioEngine';
+import { AcousticNote, generateHundredsOfNotes } from '../data/notesData';
+import { audio } from '../lib/AudioEngine';
 import { Search, Database, Plus, Trash2, Calendar, Award, Zap, Sliders, Check } from 'lucide-react';
 
 interface NotesPanelProps {
