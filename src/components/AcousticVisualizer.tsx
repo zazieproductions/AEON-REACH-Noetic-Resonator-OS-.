@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Play, Square, Activity, Radio, Volume2, Waves, Sliders, Zap } from 'lucide-react';
-import { audio } from '../utils/AudioEngine';
+import { audio } from '../lib/AudioEngine';
 
 interface AcousticVisualizerProps {
   currentHz?: number;

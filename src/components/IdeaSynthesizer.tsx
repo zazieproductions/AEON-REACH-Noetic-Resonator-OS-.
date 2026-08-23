@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { AcousticNote, SEEDED_NOTES } from '../utils/notesData';
-import { audio } from '../utils/AudioEngine';
+import { AcousticNote, SEEDED_NOTES } from '../data/notesData';
+import { audio } from '../lib/AudioEngine';
 import { Cpu, RefreshCw, Zap, Sparkles, Check, Play } from 'lucide-react';
 
 interface IdeaSynthesizerProps {

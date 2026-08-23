@@ -1,6 +1,6 @@
 import React from 'react';
 import { BookOpen, Radio, ShieldAlert, Award, FileText } from 'lucide-react';
-import { audio } from '../utils/AudioEngine';
+import { audio } from '../lib/AudioEngine';
 
 export const HelpManual: React.FC = () => {
   const triggerAudioChime = () => {

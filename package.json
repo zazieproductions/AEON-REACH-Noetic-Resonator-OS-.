@@ -2,13 +2,14 @@
   "name": "interactive-creative-mastermind-dashboard",
   "description": "An experimental creative-workspace dashboard for notes, ideas, visualizations, audio, and creative agents.",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0",
     "build": "vite build",
-    "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "preview": "vite preview --host 0.0.0.0",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm run build"
   },
   "dependencies": {
     "clsx": "2.1.1",

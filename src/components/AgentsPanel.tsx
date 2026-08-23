@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Bot, Terminal, Send, ShieldAlert, Cpu, Award } from 'lucide-react';
-import { audio } from '../utils/AudioEngine';
+import { audio } from '../lib/AudioEngine';
 
 interface Agent {
   id: string;
