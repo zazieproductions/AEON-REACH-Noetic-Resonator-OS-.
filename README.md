@@ -1,6 +1,6 @@
-# AEON-REACH Creative Workspace
+# AEON-REACH Noetic Resonator OS
 
-A self-contained creative workspace for exploring sound, notes, visual relationships, and speculative idea prompts. The interface is a desktop-style React application with a browser-based Web Audio engine and two workspace modes: floating panels and a docked grid.
+AEON-REACH Noetic Resonator OS is a self-contained creative workspace for exploring sound, notes, visual relationships, and speculative idea prompts. The interface is a desktop-style React application with a browser-based Web Audio engine and two workspace modes: floating panels and a docked grid.
 
 ## Stack
 

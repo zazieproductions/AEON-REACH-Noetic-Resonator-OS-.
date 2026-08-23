@@ -1,8 +1,8 @@
 {
-  "name": "interactive-creative-mastermind-dashboard",
-  "description": "An experimental creative-workspace dashboard for notes, ideas, visualizations, audio, and creative agents.",
+  "name": "aeon-reach-noetic-resonator-os",
+  "description": "AEON-REACH Noetic Resonator OS: a browser-based creative sound workspace.",
   "private": true,
-  "version": "0.1.0",
+  "version": "9.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
